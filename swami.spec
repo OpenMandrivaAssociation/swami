@@ -22,7 +22,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	popt-devel
 BuildRequires:	gettext
 BuildRequires:	bison
-BuildRoot: 	%_tmppath/%{name}-root
 
 %description
 Swami is an instrument patch file editor using SoundFont files that allows
