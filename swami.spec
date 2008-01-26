@@ -1,12 +1,12 @@
 %define name	swami
 %define version	0.9.4
-%define release	%mkrel 1
+%define release	%mkrel 2
 
 Summary:	A GPL sound font editor
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-License: 	GPL
+License: 	GPLv2+
 Group: 		Sound
 URL: 		http://swami.sourceforge.net
 Source0: 	%{name}-%{version}.tar.bz2
@@ -49,14 +49,14 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Name=%{title}
-Comment=%{longtitle}
+Name=Swami
+Comment=SoundFont Editor
 Exec=%{_bindir}/%{name} 
 Icon=%{name}
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=GTK;Audio;Editor;X-MandrivaLinux-Multimedia-Sound;
+Categories=GTK;Audio;Editor;
 EOF
 
 mkdir -p $RPM_BUILD_ROOT%{_miconsdir} $RPM_BUILD_ROOT%{_liconsdir} $RPM_BUILD_ROOT%{_iconsdir}
