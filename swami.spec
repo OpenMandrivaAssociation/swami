@@ -1,6 +1,6 @@
 %define name	swami
 %define version	0.9.4
-%define release	%mkrel 5
+%define release	%mkrel 6
 
 Summary:	A GPL sound font editor
 Name:		%{name}
