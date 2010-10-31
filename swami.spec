@@ -1,90 +1,116 @@
-%define name	swami
-%define version	0.9.4
-%define release	%mkrel 6
+%define name    swami
+%define version 2.0.0
+%define release %mkrel 1
 
-Summary:	A GPL sound font editor
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
-License: 	GPLv2+
-Group: 		Sound
-URL: 		http://swami.sourceforge.net
-Source0: 	%{name}-%{version}.tar.bz2
-Source1:	%{name}16.png
-Source2:	%{name}32.png
-Source3:	%{name}48.png
-Requires:	fluidsynth
-BuildRequires:	fluidsynth-devel
-BuildRequires:	libaudiofile-devel
-BuildRequires:	libsndfile-devel
-BuildRequires:	gtk-devel
-BuildRequires:	zlib-devel
-BuildRequires:	popt-devel
-BuildRequires:	gettext
-BuildRequires:	bison
-BuildRoot: 	%_tmppath/%{name}-root
+%define lib_major       0
+%define lib_name        %mklibname %{name} %{lib_major} 
+%define lib_name_devel  %mklibname %{name} -d
+
+Summary:    Instrument patch editor for wavetable synths (sounfont)
+Name:       %{name}
+Version:    %{version}
+Release:    %{release}
+License:    GPL
+Group:      Sound
+URL:        http://swami.sourceforge.net
+Source0:    http://prdownloads.sourceforge.net/swami/%{name}-%{version}.tar.gz
+Requires:   fluidsynth
+Requires:   %{lib_name}
+
+BuildRequires:  fluidsynth-devel
+BuildRequires:  libsndfile-devel
+BuildRequires:  gtk2-devel
+BuildRequires:  libglade2-devel
+BuildRequires:  python-devel
+BuildRequires:  instpatch-devel
+BuildRequires:  fftw3-devel
+BuildRoot:      %_tmppath/%{name}-root
 
 %description
 Swami is an instrument patch file editor using SoundFont files that allows
 you to create and distribute instruments from audio samples used for
-composing music. It uses iiwusynth, a software synthesizer, which has real
+composing music. It uses the fluidsynth software synthesizer, which has real
 time effect control, support for modulators, and routable audio via Jack.
-This project supersedes the Smurf Sound Font Editor, and is an entire
-object-oriented rewrite of it. The supporting libraries are GUI-independent
-and can be used in your own programs for doing SoundFont manipulation.
+Swami requires the libinstpatch library containing tools for soundfont
+editing.
+
+#-----------------------------------
+%package -n %{lib_name}
+
+Summary:        Library for processing Music Instrument patch files
+Group:          System/Libraries
+Requires:       pygtk2.0
+Requires:       libinstpatch
+%description -n %{lib_name}
+Dynamic library files needed by the swami instrument patch editor.
+
+%files -n %{lib_name}
+%defattr(-,root,root,-)
+%doc AUTHORS COPYING ChangeLog README
+%{_libdir}/lib%{name}*.so.*
+%{_libdir}/%{name}/*.so
+%{_libdir}/%{name}/*.la
+
+#-----------------------------------
+%package -n %{lib_name_devel}
+Summary:        Swami development headers
+Group:          Sound
+Requires:       %{name} = %{version}-%{release}
+Provides:       %{name}-devel = %{version}-%{release}
+
+%description -n %{lib_name_devel}
+Development files to build applications with swami headers.
+
+%files -n %{lib_name_devel}
+%defattr(-,root,root,-)
+%doc %{_datadir}/gtk-doc/html/lib%{name}
+%doc %{_datadir}/gtk-doc/html/%{name}gui
+%dir %{_includedir}/%{name}/lib%{name}
+%{_includedir}/%{name}/lib%{name}/*.h
+%dir %{_includedir}/%{name}/%{name}gui
+%{_includedir}/%{name}/%{name}gui/*.h
+%{_libdir}/*.so
+%{_libdir}/*.la
+#-----------------------------------
 
 %prep
 %setup -q
 
 %build
-%configure2_5x	--with-pic --with-gnu-ld --disable-nls --disable-gnome-canvas
+%configure2_5x --enable-static=no
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall
-%find_lang %name
+rm -rf %{buildroot}
+%makeinstall_std
+desktop-file-install --add-category="X-MandrivaLinux-Multimedia-Sound;" \
+                     --remove-category="Midi;" \
+                     --remove-category="Music;" \
+                     --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
-# Mandriva Menu entry
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
-[Desktop Entry]
-Name=Swami
-Comment=SoundFont Editor
-Exec=%{_bindir}/%{name} 
-Icon=%{name}
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=GTK;Audio;Editor;
-EOF
+mkdir -p %{buildroot}%{_datadir}/pixmaps/
+cp %{name}.svg %{buildroot}%{_datadir}/pixmaps/
 
-mkdir -p $RPM_BUILD_ROOT%{_miconsdir} $RPM_BUILD_ROOT%{_liconsdir} $RPM_BUILD_ROOT%{_iconsdir}
-cat %{SOURCE1} > $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
-cat %{SOURCE2} > $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
-cat %{SOURCE3} > $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
+%ifarch x86_64
+install -d %{buildroot}%{python_sitelib}
+mv %{buildroot}%{_prefix}/%_lib/python%{python_version}/site-packages/* %{buildroot}%{python_sitelib}/ 
+%endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-%if %mdkversion < 200900
-%post
-%{update_menus}
-%endif
-
-%if %mdkversion < 200900
-%postun
-%{clean_menus}
-%endif
-
-%files -f %name.lang
+%files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog NEWS README ABOUT-NLS
 %{_bindir}/%name
-%{_iconsdir}/%{name}.png
-%{_miconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
-%{_datadir}/applications/mandriva-%name.desktop
-%{_libdir}/%{name}
-
-
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/swami-2.glade
+%dir %{_datadir}/%{name}/images
+%{_datadir}/%{name}/images/*.png
+%{_datadir}/%{name}/images/knob.svg
+%{_datadir}/mime/packages/%{name}.xml
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.svg
+%{_datadir}/icons/hicolor/48x48/apps/swami.png
+%{_datadir}/icons/hicolor/scalable/apps/swami.svg
+%{_datadir}/pygtk/2.0/defs/*.defs
+%{python_sitelib}/*
