@@ -22,8 +22,10 @@ BuildRequires:  intltool
 BuildRequires:  gtk-doc
 BuildRequires:  fluidsynth-devel
 BuildRequires:  libsndfile-devel
-BuildRequires:  gtk2-devel
+BuildRequires:  gtk+-devel
+BuildRequires:  libgnomecanvasmm-devel
 BuildRequires:  libglade2-devel
+BuildRequires:  librsvg2-devel
 BuildRequires:  python-devel
 BuildRequires:  python-gobject-devel
 BuildRequires:  instpatch-devel
