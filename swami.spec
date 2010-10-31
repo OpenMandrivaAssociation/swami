@@ -17,11 +17,15 @@ Source0:    http://prdownloads.sourceforge.net/swami/%{name}-%{version}.tar.gz
 Requires:   fluidsynth
 Requires:   %{lib_name}
 
+BuildRequires:  glib2-devel
+BuildRequires:  intltool
+BuildRequires:  gtk-doc
 BuildRequires:  fluidsynth-devel
 BuildRequires:  libsndfile-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  libglade2-devel
 BuildRequires:  python-devel
+BuildRequires:  python-gobject-devel
 BuildRequires:  instpatch-devel
 BuildRequires:  fftw3-devel
 BuildRoot:      %_tmppath/%{name}-root
