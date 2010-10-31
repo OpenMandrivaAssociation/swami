@@ -17,17 +17,17 @@ Source0:    http://prdownloads.sourceforge.net/swami/%{name}-%{version}.tar.gz
 Requires:   fluidsynth
 Requires:   %{lib_name}
 
-BuildRequires:  glib2-devel
 BuildRequires:  intltool
 BuildRequires:  gtk-doc
 BuildRequires:  fluidsynth-devel
 BuildRequires:  libsndfile-devel
 BuildRequires:  gtk+-devel
+BuildRequires:  gtksourceview-devel
 BuildRequires:  libgnomecanvasmm-devel
 BuildRequires:  libglade2-devel
 BuildRequires:  librsvg2-devel
-BuildRequires:  python-devel
 BuildRequires:  python-gobject-devel
+BuildRequires:  pygtk2.0-devel
 BuildRequires:  instpatch-devel
 BuildRequires:  fftw3-devel
 BuildRoot:      %_tmppath/%{name}-root
@@ -83,7 +83,8 @@ Development files to build applications with swami headers.
 %setup -q
 
 %build
-%configure2_5x --enable-static=no
+./configure --enable-static=no 
+CXXFLAGS="$RPM_OPT_FLAGS"
 %make
 
 %install
