@@ -83,8 +83,7 @@ Development files to build applications with swami headers.
 %setup -q
 
 %build
-./configure --enable-static=no 
-CXXFLAGS="$RPM_OPT_FLAGS"
+%configure2_5x --enable-static=no 
 %make
 
 %install
