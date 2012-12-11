@@ -1,15 +1,12 @@
-%define name    swami
-%define version 2.0.0
-%define release %mkrel 1
+Name:       swami
+Version:    2.0.0
+Release:    1
+Summary:    Instrument patch editor for wavetable synths (sounfont)
 
 %define lib_major       0
-%define lib_name        %mklibname %{name} %{lib_major} 
+%define lib_name        %mklibname %{name} %{lib_major}
 %define lib_name_devel  %mklibname %{name} -d
 
-Summary:    Instrument patch editor for wavetable synths (sounfont)
-Name:       %{name}
-Version:    %{version}
-Release:    %{release}
 License:    GPL
 Group:      Sound
 URL:        http://swami.sourceforge.net
@@ -20,11 +17,11 @@ Requires:   %{lib_name}
 BuildRequires:  intltool
 BuildRequires:  gtk-doc
 BuildRequires:  fluidsynth-devel
-BuildRequires:  libsndfile-devel
+BuildRequires:  sndfile-devel
 BuildRequires:  gtk+-devel
 BuildRequires:  gtksourceview-devel
 BuildRequires:  libgnomecanvasmm-devel
-BuildRequires:  libglade2-devel
+BuildRequires:  libglade2.0-devel
 BuildRequires:  librsvg2-devel
 BuildRequires:  python-gobject-devel
 BuildRequires:  pygtk2.0-devel
@@ -55,7 +52,6 @@ Dynamic library files needed by the swami instrument patch editor.
 %doc AUTHORS COPYING ChangeLog README
 %{_libdir}/lib%{name}*.so.*
 %{_libdir}/%{name}/*.so
-%{_libdir}/%{name}/*.la
 
 #-----------------------------------
 %package -n %{lib_name_devel}
@@ -76,14 +72,13 @@ Development files to build applications with swami headers.
 %dir %{_includedir}/%{name}/%{name}gui
 %{_includedir}/%{name}/%{name}gui/*.h
 %{_libdir}/*.so
-%{_libdir}/*.la
 #-----------------------------------
 
 %prep
 %setup -q
 
 %build
-%configure2_5x --enable-static=no 
+LDFLAGS="-lgmodule-2.0" %configure2_5x --enable-static=no
 %make
 
 %install
@@ -99,7 +94,7 @@ cp %{name}.svg %{buildroot}%{_datadir}/pixmaps/
 
 %ifarch x86_64
 install -d %{buildroot}%{python_sitelib}
-mv %{buildroot}%{_prefix}/%_lib/python%{python_version}/site-packages/* %{buildroot}%{python_sitelib}/ 
+mv %{buildroot}%{_prefix}/%_lib/python%{python_version}/site-packages/* %{buildroot}%{python_sitelib}/
 %endif
 
 %clean
@@ -120,3 +115,53 @@ rm -rf %{buildroot}
 %{_datadir}/icons/hicolor/scalable/apps/swami.svg
 %{_datadir}/pygtk/2.0/defs/*.defs
 %{python_sitelib}/*
+
+
+%changelog
+* Mon Nov 01 2010 Frank Kober <emuse@mandriva.org> 2.0.0-1mdv2011.0
++ Revision: 591471
+- revert configure macro
+- add missing BR, do not use configure macro
+- new version 2.0.0
+- new version 2.0.0
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+* Sat Aug 02 2008 Thierry Vignaud <tv@mandriva.org> 0.9.4-5mdv2009.0
++ Revision: 261302
+- rebuild
+
+* Tue Jul 29 2008 Thierry Vignaud <tv@mandriva.org> 0.9.4-4mdv2009.0
++ Revision: 253849
+- rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - rpm filetriggers deprecates update_menus/update_scrollkeeper/update_mime_database/update_icon_cache/update_desktop_database/post_install_gconf_schemas
+
+* Sat Jan 26 2008 Funda Wang <fwang@mandriva.org> 0.9.4-2mdv2008.1
++ Revision: 158224
+- fix menu entry
+
+* Wed Jan 02 2008 Olivier Blin <oblin@mandriva.com> 0.9.4-1mdv2008.1
++ Revision: 140904
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+    - kill desktop-file-validate's 'warning: key "Encoding" in group "Desktop Entry" is deprecated'
+
+
+* Sun Jan 07 2007 Crispin Boylan <crisb@mandriva.org> 0.9.4-1mdv2007.0
++ Revision: 105338
+- BuildRequires popt-devel
+- New version, XDG menu
+- Import swami
+
+* Mon May 01 2006 Austin Acton <austin@mandriva.org> 0.9.3-1mdk
+- New release 0.9.3
+
+* Sun Feb 06 2005 Austin Acton <austin@mandrake.org> 0.9.2-2mdk
+- birthday
+- fix summary and buildrequires
+
