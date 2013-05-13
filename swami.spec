@@ -22,7 +22,7 @@ BuildRequires:  gtk+-devel
 BuildRequires:  gtksourceview-devel
 BuildRequires:  libgnomecanvasmm-devel
 BuildRequires:  libglade2.0-devel
-BuildRequires:  librsvg2-devel
+BuildRequires:  pkgconfig(librsvg-2.0)
 BuildRequires:  python-gobject-devel
 BuildRequires:  pygtk2.0-devel
 BuildRequires:  instpatch-devel
