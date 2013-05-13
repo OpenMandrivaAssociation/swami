@@ -1,6 +1,6 @@
 Name:       swami
 Version:    2.0.0
-Release:    1
+Release:    2
 Summary:    Instrument patch editor for wavetable synths (sounfont)
 
 %define lib_major       0
@@ -27,7 +27,6 @@ BuildRequires:  python-gobject-devel
 BuildRequires:  pygtk2.0-devel
 BuildRequires:  instpatch-devel
 BuildRequires:  fftw3-devel
-BuildRoot:      %_tmppath/%{name}-root
 
 %description
 Swami is an instrument patch file editor using SoundFont files that allows
