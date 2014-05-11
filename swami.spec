@@ -97,6 +97,7 @@ mv %{buildroot}%{_prefix}/%_lib/python%{python_version}/site-packages/* %{buildr
 
 
 %files
+%doc AUTHORS COPYING ChangeLog README
 %{_bindir}/%name
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/swami-2.glade
