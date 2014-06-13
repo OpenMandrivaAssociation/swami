@@ -12,21 +12,21 @@ Group:      Sound
 URL:        http://swami.sourceforge.net
 Source0:    http://prdownloads.sourceforge.net/swami/%{name}-%{version}.tar.gz
 Requires:   fluidsynth
-Requires:   %{lib_name}
+Requires:   %{lib_name} = %{EVRD}
 
 BuildRequires:  intltool
 BuildRequires:  gtk-doc
-BuildRequires:  fluidsynth-devel
-BuildRequires:  sndfile-devel
-BuildRequires:  gtk+-devel
-BuildRequires:  gtksourceview-devel
-BuildRequires:  libgnomecanvasmm-devel
-BuildRequires:  libglade2.0-devel
+BuildRequires:  pkgconfig(fluidsynth)
+BuildRequires:  pkgconfig(sndfile)
+BuildRequires:  pkgconfig(gtk+)
+BuildRequires:  pkgconfig(gtksourceview-2.0)
+BuildRequires:  pkgconfig(libgnomecanvasmm-2.6)
+BuildRequires:  pkgconfig(libglade-2.0)
 BuildRequires:  pkgconfig(librsvg-2.0)
-BuildRequires:  python-gobject-devel
-BuildRequires:  pygtk2.0-devel
-BuildRequires:  instpatch-devel
-BuildRequires:  fftw3-devel
+BuildRequires:  pkgconfig(pygobject-2.0)
+BuildRequires:  pkgconfig(pygtk-2.0)
+BuildRequires:  pkgconfig(libinstpatch-1.0)
+BuildRequires:  pkgconfig(fftw3)
 
 %description
 Swami is an instrument patch file editor using SoundFont files that allows
@@ -43,11 +43,11 @@ Summary:        Library for processing Music Instrument patch files
 Group:          System/Libraries
 Requires:       pygtk2.0
 Requires:       libinstpatch
+
 %description -n %{lib_name}
 Dynamic library files needed by the swami instrument patch editor.
 
 %files -n %{lib_name}
-%defattr(-,root,root,-)
 %doc AUTHORS COPYING ChangeLog README
 %{_libdir}/lib%{name}*.so.*
 %{_libdir}/%{name}/*.so
@@ -56,14 +56,13 @@ Dynamic library files needed by the swami instrument patch editor.
 %package -n %{lib_name_devel}
 Summary:        Swami development headers
 Group:          Sound
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name} = %{EVRD}
 Provides:       %{name}-devel = %{version}-%{release}
 
 %description -n %{lib_name_devel}
 Development files to build applications with swami headers.
 
 %files -n %{lib_name_devel}
-%defattr(-,root,root,-)
 %doc %{_datadir}/gtk-doc/html/lib%{name}
 %doc %{_datadir}/gtk-doc/html/%{name}gui
 %dir %{_includedir}/%{name}/lib%{name}
@@ -81,8 +80,8 @@ LDFLAGS="-lgmodule-2.0" %configure2_5x --enable-static=no
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
+
 desktop-file-install --add-category="X-MandrivaLinux-Multimedia-Sound;" \
                      --remove-category="Midi;" \
                      --remove-category="Music;" \
@@ -96,11 +95,9 @@ install -d %{buildroot}%{python_sitelib}
 mv %{buildroot}%{_prefix}/%_lib/python%{python_version}/site-packages/* %{buildroot}%{python_sitelib}/
 %endif
 
-%clean
-rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%doc AUTHORS COPYING ChangeLog README
 %{_bindir}/%name
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/swami-2.glade
@@ -115,52 +112,4 @@ rm -rf %{buildroot}
 %{_datadir}/pygtk/2.0/defs/*.defs
 %{python_sitelib}/*
 
-
-%changelog
-* Mon Nov 01 2010 Frank Kober <emuse@mandriva.org> 2.0.0-1mdv2011.0
-+ Revision: 591471
-- revert configure macro
-- add missing BR, do not use configure macro
-- new version 2.0.0
-- new version 2.0.0
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - rebuild
-
-* Sat Aug 02 2008 Thierry Vignaud <tv@mandriva.org> 0.9.4-5mdv2009.0
-+ Revision: 261302
-- rebuild
-
-* Tue Jul 29 2008 Thierry Vignaud <tv@mandriva.org> 0.9.4-4mdv2009.0
-+ Revision: 253849
-- rebuild
-
-  + Pixel <pixel@mandriva.com>
-    - rpm filetriggers deprecates update_menus/update_scrollkeeper/update_mime_database/update_icon_cache/update_desktop_database/post_install_gconf_schemas
-
-* Sat Jan 26 2008 Funda Wang <fwang@mandriva.org> 0.9.4-2mdv2008.1
-+ Revision: 158224
-- fix menu entry
-
-* Wed Jan 02 2008 Olivier Blin <oblin@mandriva.com> 0.9.4-1mdv2008.1
-+ Revision: 140904
-- restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-    - kill desktop-file-validate's 'warning: key "Encoding" in group "Desktop Entry" is deprecated'
-
-
-* Sun Jan 07 2007 Crispin Boylan <crisb@mandriva.org> 0.9.4-1mdv2007.0
-+ Revision: 105338
-- BuildRequires popt-devel
-- New version, XDG menu
-- Import swami
-
-* Mon May 01 2006 Austin Acton <austin@mandriva.org> 0.9.3-1mdk
-- New release 0.9.3
-
-* Sun Feb 06 2005 Austin Acton <austin@mandrake.org> 0.9.2-2mdk
-- birthday
-- fix summary and buildrequires
 
