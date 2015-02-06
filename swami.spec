@@ -1,6 +1,6 @@
 Name:       swami
 Version:    2.0.0
-Release:    2
+Release:    3
 Summary:    Instrument patch editor for wavetable synths (sounfont)
 
 %define lib_major       0
