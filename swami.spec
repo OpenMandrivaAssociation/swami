@@ -9,7 +9,7 @@ Summary:    Instrument patch editor for wavetable synths (sounfont)
 
 License:    GPL
 Group:      Sound
-URL:        http://swami.sourceforge.net
+URL:        https://swami.sourceforge.net
 Source0:    http://prdownloads.sourceforge.net/swami/%{name}-%{version}.tar.gz
 Requires:   fluidsynth
 Requires:   %{lib_name} = %{EVRD}
